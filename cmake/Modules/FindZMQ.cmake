@@ -11,7 +11,7 @@
 message("-- Detecting ZeroMQ package")
 
 find_package(PkgConfig QUIET)
-pkg_check_modules(ZMQ QUIET glfw3)
+pkg_check_modules(ZMQ QUIET zmq)
 
 if(PC_ZMQ_FOUND)
   set(ZMQ_FOUND 1)
