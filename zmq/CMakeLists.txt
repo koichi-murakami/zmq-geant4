@@ -7,7 +7,7 @@ add_library(
 )
 # headers
 set(HEADERS
-  G4ZMQServer.hh
+  G4ZMQserver.hh
 )
 
 # install
