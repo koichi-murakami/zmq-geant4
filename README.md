@@ -4,9 +4,9 @@ Copyright (c) 2017, Koichi Murakami
 zmq-geant4 is a ZeroMQ interface for Geant4
 
 
-* Releases
-* Install Instructions
-* Issues
+* [Releases](https://github.com/koichi-murakami/zmq-geant4/releases)
+* [Install Instructions](https://github.com/koichi-murakami/zmq-geant4/wiki/Installation)
+* [Issues](https://github.com/koichi-murakami/zmq-geant4/issues)
 
 ## License
 BSD 2-Clause License
