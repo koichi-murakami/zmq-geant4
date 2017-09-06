@@ -8,17 +8,12 @@ This software is distributed WITHOUT ANY WARRANTY; without even the
 implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 See the License for more information.
 ============================================================================*/
-//#include "G4StateManager.hh"
-//#include "G4UIcommandTree.hh"
-//#include "G4UIcommand.hh"
-//#include "G4UIcommandStatus.hh"
 #include <cstring>
 #include <sstream>
 #include <zmq.hpp>
 #include "G4UItcsh.hh"
 #include "G4UImanager.hh"
 #include "G4ZMQServer.hh"
-
 
 // --------------------------------------------------------------------------
 namespace {
