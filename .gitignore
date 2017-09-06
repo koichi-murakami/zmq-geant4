@@ -34,3 +34,4 @@
 # Directories
 build/
 *zzz/
+__pycache__/
