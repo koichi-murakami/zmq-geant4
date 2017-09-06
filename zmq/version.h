@@ -12,8 +12,8 @@
 #define G4ZMQ_VERSION_H_
 
 #define G4ZMQ_VERSION_MAJOR "1"
-#define G4ZMQ_VERSION_MINOR "0.0d1"
-#define G4ZMQ_VERSION_BUILD 0x94135d4
+#define G4ZMQ_VERSION_MINOR "0.0-beta"
+#define G4ZMQ_VERSION_BUILD 0x1ed93de
 
 namespace {
   const int build_head = (G4ZMQ_VERSION_BUILD & 0xffff000) >> 12;
