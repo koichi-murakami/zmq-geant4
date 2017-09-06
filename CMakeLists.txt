@@ -96,4 +96,4 @@ enable_testing()
 endif()
 
 # integration tests
-#add_subdirectory(tests/devinfo EXCLUDE_FROM_ALL)
+add_subdirectory(tests/it EXCLUDE_FROM_ALL)
