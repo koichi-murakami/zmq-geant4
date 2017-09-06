@@ -1,13 +1,16 @@
 # - build G4zeromq library
 
+include_directories(${PROJECT_SOURCE_DIR} ${GEANT4_INCLUDE_DIR}
+                    ${ZMQ_INCLUDE_DIRS})
+
 # library
 add_library(
   G4zeromq SHARED
-  G4ZMQserver.cc
+  G4ZMQServer.cc
 )
 # headers
 set(HEADERS
-  G4ZMQserver.hh
+  G4ZMQServer.hh
 )
 
 # install
