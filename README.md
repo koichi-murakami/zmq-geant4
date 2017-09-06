@@ -1,7 +1,9 @@
 # ZeroMQ Interface for Geant4
 Copyright (c) 2017, Koichi Murakami
 
-zmq-geant4 is a ZeroMQ interface for Geant4
+zmq-geant4 is a ZeroMQ interface for Geant4.
+This interface is a part of a Geant4 kernel for Jupyter.
+A Jupyter kernel is provided in another repository.
 
 
 * [Releases](https://github.com/koichi-murakami/zmq-geant4/releases)
