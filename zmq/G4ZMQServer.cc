@@ -25,7 +25,6 @@ namespace {
 
 G4UImanager* ui_manager = nullptr;
 G4bool qexit = false;
-G4bool qcont = false;
 std::stringstream cout_stream;
 std::string black_str = "\033[30m";
 
@@ -51,7 +50,6 @@ G4ZMQServer::G4ZMQServer()
   ::ui_manager-> SetCoutDestination(this);
 
   ::qexit = false;
-  ::qcont = false;
 }
 
 // --------------------------------------------------------------------------
@@ -70,8 +68,7 @@ G4UIsession* G4ZMQServer::SessionStart()
   enum { kBufferSize = 4096 };
   char buffer[kBufferSize];
 
-  ::qexit = true;
-  while ( ::qexit ) {
+  while ( ! ::qexit ) {
     std::cout << "@@ Waiting..." << std::endl;
 
     // waiting command
@@ -162,96 +159,57 @@ G4String G4ZMQServer::GetCommand(const G4String& input)
     shell_-> ListCommand(cstr.remove(0,2));
     cmdstr = nullstr;
 
-  } else if(cstr == "pwd") {
+  } else if (cstr == "pwd" ) {
     G4cout << "Current Command Directory : "
            << GetCurrentWorkingDirectory() << G4endl;
     cmdstr = nullstr;
 
-  } else if( cstr == "cwd" ) {l
+  } else if ( cstr == "cwd" ) {
     shell_-> ShowCurrentDirectory();
     cmdstr = nullstr;
 
-  } else if(cstr == "cd" || cstr.substr(0,3) == "cd ") {
+  } else if (cstr == "cd" || cstr.substr(0,3) == "cd " ) {
     ChangeDirectoryCommand(cstr);
     shell_-> SetCurrentDirectory(GetCurrentWorkingDirectory());
     cmdstr = nullstr;
 
-  } else if(cstr == "help" || cstr.substr(0,5) == "help ") {
+  } else if ( cstr == "help" || cstr.substr(0,5) == "help " ) {
     TerminalHelp(cstr);
     cmdstr = nullstr;
 
-  } else if(cstr(0) == '?') {
+  } else if ( cstr(0) == '?' ) {
     ShowCurrent(cstr);
     cmdstr = nullstr;
 
-  } else if(cstr == "hist" || cstr == "history") { // "hist/history"
-    G4int nh= ::ui_manager-> GetNumberOfHistory();
-    for (G4int i=0; i<nh; i++) {
+  } else if ( cstr == "history" ) {
+    auto nh= ::ui_manager-> GetNumberOfHistory();
+    for (auto i = 0; i < nh; i++) {
       G4cout << i << ": " << ::ui_manager->GetPreviousCommand(i) << G4endl;
     }
-    cmdstr= nullstr;
+    cmdstr = nullstr;
 
-  } else if(cstr(0) == '!') {   // "!"
-    G4String ss= cstr(1, cstr.length()-1);
-    G4int vl;
-    const char* tt= ss;
-    std::istringstream is(tt);
-    is >> vl;
-    G4int nh = ::ui_manager-> GetNumberOfHistory();
-    if(vl>=0 && vl<nh) {
-      cmdstr= ::ui_manager-> GetPreviousCommand(vl);
-      G4cout << cmdstr << G4endl;
-    } else {
-      G4cerr << "history " << vl << " is not found." << G4endl;
-      cmdstr= nullstr;
-    }
+  } else if ( cstr == "exit" ) {
+    ::qexit = true;
+    cmdstr = nullstr;
 
-  } else if(cstr == "exit") {   // "exit"
-    if( :: qcont ) {
-      G4cout << "You are now processing RUN." << G4endl;
-      G4cout << "Please abort it using \"/run/abort\" command first" << G4endl;
-      G4cout << " and use \"continue\" command until the application"
-       << G4endl;
-      G4cout << " becomes to Idle." << G4endl;
-    } else {
-      ::qexit = FALSE;
-      cmdstr= nullstr;
-    }
-
-
-
-  } else if( cstr == "cont" || cstr == "continue"){     // "cont/continu"
-    ::qcont = FALSE;
-    cmdstr= nullstr;
-
-  } else if( cstr.empty() ){ // NULL command
-    cmdstr= nullstr;
-
-  } else {
+  } else if ( cstr.empty() ) {
+    cmdstr = nullstr;
   }
 
   return ModifyToFullPathCommand(cmdstr);
 }
 
-
 // --------------------------------------------------------------------------
 void G4ZMQServer::ExecuteCommand(const G4String& command)
 {
-  if(command.length()<2) return;
-
-  G4int returnVal = ::ui_manager-> ApplyCommand(command);
-
-  G4int paramIndex = returnVal % 100;
-  // 0 - 98 : paramIndex-th parameter is invalid
-  // 99     : convination of parameters is invalid
-  G4int commandStatus = returnVal - paramIndex;
+  auto rc = ::ui_manager-> ApplyCommand(command);
+  auto pcode = rc % 100;
+  auto status = rc - pcode;
 
   G4UIcommand* cmd = nullptr;
-  if( commandStatus != fCommandSucceeded ) {
-    cmd = FindCommand(command);
-  }
+  if( status != fCommandSucceeded ) cmd = FindCommand(command);
 
-  switch ( commandStatus ) {
+  switch ( status ) {
   case fCommandSucceeded:
     break;
   case fCommandNotFound:
@@ -266,19 +224,19 @@ void G4ZMQServer::ExecuteCommand(const G4String& command)
    break;
   case fParameterOutOfCandidates:
     G4cerr << "Parameter is out of candidate list (index "
-           << paramIndex << ")" << G4endl;
+           << pcode << ")" << G4endl;
     G4cerr << "Candidates : "
-           << cmd-> GetParameter(paramIndex)-> GetParameterCandidates()
+           << cmd-> GetParameter(pcode)-> GetParameterCandidates()
            << G4endl;
     break;
   case fParameterUnreadable:
     G4cerr << "Parameter is wrong type and/or is not omittable (index "
-           << paramIndex << ")" << G4endl;
+           << pcode << ")" << G4endl;
     break;
   case fAliasNotFound:
     break;
   default:
-    G4cerr << "command refused (" << commandStatus << ")" << G4endl;
+    G4cerr << "command refused (" << status << ")" << G4endl;
     break;
  }
 }
