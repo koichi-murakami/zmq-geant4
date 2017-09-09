@@ -13,6 +13,7 @@ See the License for more information.
 #include <zmq.hpp>
 #include "G4UItcsh.hh"
 #include "G4UImanager.hh"
+#include "G4UIcommandTree.hh"
 #include "G4ZMQServer.hh"
 
 // --------------------------------------------------------------------------
@@ -22,12 +23,31 @@ G4UImanager* ui_manager = nullptr;
 G4bool qexit = false;
 std::stringstream cout_stream;
 std::string black_str = "\033[30m";
+std::string command_list = "";
 
 void ThrowException(const std::string& message)
 {
   std::stringstream ss;
   ss << "[ERROR] " << message << std::endl;
   throw std::runtime_error(ss.str());
+}
+
+// --------------------------------------------------------------------------
+void GetCommandTree(G4UIcommandTree* ctree)
+{
+  command_list += (ctree-> GetPathName() + " ");
+
+  auto n_cmd = ctree-> GetCommandEntry();
+  for ( auto icmd = 1; icmd <= n_cmd; icmd++ ) {
+    auto cmd_path = ctree-> GetCommand(icmd)-> GetCommandPath();
+    command_list += (cmd_path + " ");
+  }
+
+  auto n_tree = ctree-> GetTreeEntry();
+  for ( auto itr = 1; itr <= n_tree ; itr++ ) {
+    G4UIcommandTree* atree = ctree-> GetTree(itr);
+    ::GetCommandTree(atree);
+  }
 }
 
 } // end of namespace
@@ -81,10 +101,25 @@ G4UIsession* G4ZMQServer::SessionStart()
     // store output & send back response
     ::cout_stream.str("");
 
-    if ( cmd_str == "ping") {
+    if ( cmd_str == "@@ping" ) {
       G4cout << "pong" << G4endl;
-    } else if ( cmd_str == "help") {
+
+    } else if ( cmd_str == "@@get_command_tree" ) {
+      auto cwd_name = GetCurrentWorkingDirectory();
+      auto cwd_tree = FindDirectory(cwd_name.c_str());
+      ::command_list = "";
+      ::GetCommandTree(cwd_tree);
+      G4cout << ::command_list << std::flush;
+
+    } else if ( cmd_str == "@@get_fullcommand_tree" ) {
+      auto root = ::ui_manager-> GetTree();
+      ::command_list = "";
+      ::GetCommandTree(root);
+      G4cout << ::command_list << std::flush;
+
+    } else if ( cmd_str == "help" ) {
       G4cout << "help <command>" << G4endl;
+
     } else {
       G4String new_command = GetCommand(cmd_str);
       std::cout << ::black_str << "@@@ newcomd=" << new_command << std::endl;
