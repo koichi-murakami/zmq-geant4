@@ -1,8 +1,8 @@
 # ZeroMQ Interface for Geant4
 
-[](https://img.shields.io/badge/geant4-10.3-green.svg)
-[](https://img.shields.io/github/license/koichi-murakami/zmq-geant4.svg)
-[](https://img.shields.io/github/release/koichi-murakami/zmq-geant4.svg)
+[![aa](https://img.shields.io/badge/geant4-10.3-green.svg?style=flat-square)](LICENSE)
+[![bb](https://img.shields.io/github/license/koichi-murakami/zmq-geant4.svg)](LICENSE)
+[![ccc](https://img.shields.io/github/release/koichi-murakami/zmq-geant4.svg)](LICENSE)
 
 Copyright (c) 2017, Koichi Murakami
 
