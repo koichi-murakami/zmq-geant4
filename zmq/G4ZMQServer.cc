@@ -84,7 +84,7 @@ G4UIsession* G4ZMQServer::SessionStart()
   char buffer[kBufferSize];
 
   while ( ! ::qexit ) {
-    std::cout << "@@ Waiting..." << std::endl;
+    //std::cout << "@@ Waiting..." << std::endl;
 
     // waiting command
     zmq::message_t request;
@@ -96,7 +96,7 @@ G4UIsession* G4ZMQServer::SessionStart()
     buffer[end_pos] = '\0';
     std::string cmd_str = buffer;
 
-    std::cout << "@@ recv=" << cmd_str << "=" << std::endl;
+    //std::cout << "@@ recv=" << cmd_str << "=" << std::endl;
 
     // store output & send back response
     ::cout_stream.str("");
@@ -122,7 +122,7 @@ G4UIsession* G4ZMQServer::SessionStart()
 
     } else {
       G4String new_command = GetCommand(cmd_str);
-      std::cout << ::black_str << "@@@ newcomd=" << new_command << std::endl;
+      //std::cout << ::black_str << "@@@ newcomd=" << new_command << std::endl;
       ExecuteCommand(new_command);
     }
 
@@ -145,9 +145,9 @@ void G4ZMQServer::PauseSessionStart(const G4String& msg)
 // --------------------------------------------------------------------------
 G4int G4ZMQServer::ReceiveG4cout(const G4String& coutString)
 {
-  if ( qdebug_ ) {
-    std::cout << coutString << std::flush;
-  }
+  //if ( qdebug_ ) {
+  //  std::cout << coutString << std::flush;
+  //}
 
   ::cout_stream << coutString << std::flush;
 
@@ -157,9 +157,9 @@ G4int G4ZMQServer::ReceiveG4cout(const G4String& coutString)
 // --------------------------------------------------------------------------
 G4int G4ZMQServer::ReceiveG4cerr(const G4String& cerrString)
 {
-  if ( qdebug_ ) {
-    std::cerr << cerrString << std::flush;
-  }
+  //if ( qdebug_ ) {
+  //  std::cerr << cerrString << std::flush;
+  //}
 
   ::cout_stream << cerrString << std::flush;
 
