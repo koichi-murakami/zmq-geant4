@@ -1,12 +1,17 @@
 # ZeroMQ Interface for Geant4
+
+[](https://img.shields.io/badge/geant4-10.3-green.svg)
+[](https://img.shields.io/github/license/koichi-murakami/zmq-geant4.svg)
+[](https://img.shields.io/github/release/koichi-murakami/zmq-geant4.svg)
+
 Copyright (c) 2017, Koichi Murakami
 
-zmq-geant4 is a [ZeroMQ](http://zeromq.org/) interface for Geant4.
-This is an alternative implementation of Geant4 interface.
+zmq-geant4 is a [ZeroMQ](http://zeromq.org/) interface with Geant4,
+that is an alternative implementation of Geant4 session.
 The interface is designed for the purpose of Geant4 kernel
 for [Jupyter](http://jupyter.org/).
-A Jupyter kernel is provided in another repository.
-
+A Jupyter kernel is provided by
+[igeant4](https://github.com/koichi-murakami/igeant4) repository.
 
 * [Releases](https://github.com/koichi-murakami/zmq-geant4/releases)
 * [Install Instructions](https://github.com/koichi-murakami/zmq-geant4/wiki/Installation)
