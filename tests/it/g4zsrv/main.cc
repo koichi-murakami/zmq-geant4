@@ -47,6 +47,7 @@ void show_help()
             << "   -v  --version       show program name/version." << std::endl
             << "   -n, --network       network [127.0.0.1/lo]" << std::endl
             << "   -p, --port          port [5555]" << std::endl
+            << "   -d  --debug         enable debug mode" << std::endl
             << "   -s, --session=type  specify session type" << std::endl
             << "   -i, --init=macro    specify initial macro"
             << std::endl;
@@ -61,6 +62,7 @@ int main(int argc, char** argv)
   // optional parameters
   bool qhelp = false;
   bool qversion = false;
+  bool qdebug = false;
   std::string network_name = "127.0.0.1";
   std::string port_num = "5555";
   std::string session_type = "";
@@ -71,6 +73,7 @@ int main(int argc, char** argv)
     {"version", no_argument,       NULL, 'v'},
     {"network", required_argument, NULL, 'n'},
     {"port",    required_argument, NULL, 'p'},
+    {"debug",   no_argument,       NULL, 'd'},
     {"session", required_argument, NULL, 's'},
     {"init",    required_argument, NULL, 'i'},
     {NULL,      0,                 NULL,  0}
@@ -95,6 +98,9 @@ int main(int argc, char** argv)
       break;
     case 'p' :
       port_num = optarg;
+      break;
+    case 'd' :
+      qdebug = true;
       break;
     case 's' :
       session_type = optarg;
@@ -154,7 +160,7 @@ int main(int argc, char** argv)
   if ( session_type == "" ) {
     G4ZMQServer* zmq_session = new G4ZMQServer();
     zmq_session-> SetEndpoint(endpoint);
-    zmq_session-> SetDebug(true);
+    zmq_session-> SetDebug(qdebug);
     zmq_session -> SessionStart();
     delete zmq_session;
   } else {
