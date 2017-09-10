@@ -1,10 +1,18 @@
 #/usr/bin/env python
+"""
+Copyright 2017 Koichi Murakami
+
+Distributed under the OSI-approved BSD License (the "License");
+see accompanying file LICENSE for details.
+
+This software is distributed WITHOUT ANY WARRANTY; without even the
+implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+See the License for more information.
+"""
 # ==================================================================
-# python script for zmq-geant4
+# python client for zmq-geant4
 #
 # *** Python3 ***
-#
-# basic zmq-geant4 client
 # ==================================================================
 import zmq
 
@@ -29,13 +37,13 @@ def ping() :
   else :
     raise ConnectionError("*** connection timeout")
 
-def get_command_tree() :
-  socket.send(b"@@get_command_tree")
+def debug(dflag) :
+  if dflag :
+    socket.send(b"@@debug")
+  else :
+    socket.send(b"@@nodebug")
   output = socket.recv()
-  cmdlist_str_buf = output.decode(charset)
-  cmdlist_str = cmdlist_str_buf.strip()
-  cmdlist = cmdlist_str.split(' ')
-  return cmdlist
+  print(output.decode(charset))
 
 def apply(command) :
   cmd_str= command.encode(charset)
@@ -106,5 +114,3 @@ def exit() :
 # ===============================================================
 if __name__ == '__main__' :
   pass
-else :
-  connect()
