@@ -236,9 +236,6 @@ G4String G4ZMQServer::GetCommand(const G4String& input)
   } else if ( cstr == "exit" ) {
     ::qexit = true;
     cmdstr = nullstr;
-
-  } else {
-    cmdstr = nullstr;
   }
 
   return ModifyToFullPathCommand(cmdstr);
